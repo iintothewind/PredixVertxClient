@@ -4,8 +4,6 @@ import java.util.concurrent.CountDownLatch
 
 import com.typesafe.scalalogging.Logger
 import io.vertx.core.json.{JsonArray, JsonObject}
-import io.vertx.scala.ext.web.client.WebClient
-import predix.ClientLike
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}

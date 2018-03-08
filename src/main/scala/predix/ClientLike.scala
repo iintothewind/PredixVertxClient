@@ -12,7 +12,7 @@ import scala.util.Try
 
 
 trait ClientLike {
-  implicit lazy val log = Logger("vertx")
+  implicit lazy val log: Logger = Logger("vertx")
   implicit lazy val cfg: Config = Try(ConfigFactory.load("vertx.conf")).getOrElse(ConfigFactory.empty()
     .withValue("vertx.http.ssl", ConfigValueFactory.fromAnyRef(true))
     .withValue("vertx.http.trustAll", ConfigValueFactory.fromAnyRef(true))

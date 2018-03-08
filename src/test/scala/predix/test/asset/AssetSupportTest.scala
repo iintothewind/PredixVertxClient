@@ -19,7 +19,7 @@ class AssetSupportTest extends AssetSupport with UaaSupport with ClientLike with
 
   "An AssetSupport" should "be able to do collections" in new Builder {
     collections().onComplete {
-      case Success(result) => log.info(s"result: ${result.body().toString()}"); latch.countDown()
+      case Success(result) => log.info(s"result: ${result.body()}"); latch.countDown()
       case Failure(cause) => log.info(s"fail: $cause"); latch.countDown()
     }
     latch.await()

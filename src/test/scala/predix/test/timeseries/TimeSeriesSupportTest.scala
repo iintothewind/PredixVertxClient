@@ -20,7 +20,7 @@ class TimeSeriesSupportTest extends TimeSeriesSupport with UaaSupport with Clien
 
   "A TimeSeriesSupport" should "be able to do tags" in new Builder {
     tags().onComplete {
-      case Success(result) => log.info(s"result: ${result.body().toString()}"); latch.countDown()
+      case Success(result) => log.info(s"result: ${result.body()}"); latch.countDown()
       case Failure(cause) => log.info(s"fail: $cause"); latch.countDown()
     }
     latch.await()

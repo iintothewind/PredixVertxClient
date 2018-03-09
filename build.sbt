@@ -30,18 +30,26 @@ resolvers ++= Seq(
   MavenRepository("aliyun", "http://maven.aliyun.com/nexus/content/groups/public")
 )
 
+lazy val log4jVersion = "2.7"
+lazy val vertxVersion = "3.4.2"
+lazy val latest = "latest.integration"
+
+assemblyMergeStrategy in assembly := {
+  case PathList("META-INF", xs@_*) => MergeStrategy.discard
+  case _ => MergeStrategy.first
+}
+
 libraryDependencies ++= Seq(
-  "org.apache.logging.log4j" % "log4j-api" % "2.7",
-  "org.apache.logging.log4j" % "log4j-jcl" % "2.7",
-  "org.apache.logging.log4j" % "log4j-core" % "2.7",
-  "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.7",
+  "org.apache.logging.log4j" % "log4j-api" % log4jVersion,
+  "org.apache.logging.log4j" % "log4j-jcl" % log4jVersion,
+  "org.apache.logging.log4j" % "log4j-core" % log4jVersion,
+  "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4jVersion,
   "com.typesafe.scala-logging" %% "scala-logging" % "3.8.0",
   "com.typesafe" % "config" % "1.3.3",
-  "com.google.guava" % "guava" % "21.0",
   "org.scalatest" %% "scalatest" % "3.0.5",
-  "io.vertx" % "vertx-core" % "3.5.1",
-  "io.vertx" %% "vertx-web-client-scala" % "3.5.1",
-  "io.vertx" %% "vertx-auth-oauth2-scala" % "3.5.1",
-  "io.vertx" % "vertx-unit" % "3.5.1" % "test",
+  "io.vertx" % "vertx-core" % vertxVersion,
+  "io.vertx" %% "vertx-web-client-scala" % vertxVersion,
+  "io.vertx" %% "vertx-auth-oauth2-scala" % vertxVersion,
+  "io.vertx" % "vertx-unit" % vertxVersion % "test",
   "org.scalacheck" %% "scalacheck" % "1.13.4" % "test"
 )

@@ -20,22 +20,32 @@ trait TimeSeriesSupport {
 
   def ingest(buffer: Buffer)(implicit token: Future[AccessToken]): Unit = {
     token.foreach { t =>
-      httpClient.websocket(RequestOptions().setPort(port).setHost(host).setURI(ingestUri),
-        MultiMap.caseInsensitiveMultiMap().add("content-type", "application/json").add("Authorization", s"Bearer ${t.principal().getString("access_token")}").add("predix-zone-id", zoneId).add("Origin", origin),
-        ws => {
+      httpClient.websocket(
+        RequestOptions().setPort(port).setHost(host).setURI(ingestUri),
+        MultiMap
+          .caseInsensitiveMultiMap()
+          .add("content-type", "application/json")
+          .add("Authorization", s"Bearer ${t.principal().getString("access_token")}")
+          .add("predix-zone-id", zoneId)
+          .add("Origin", origin),
+        ws =>
           Try {
             ws.write(buffer)
           } match {
             case Success(_) => ws.close()
             case Failure(e) => log.warn(s"webSocket.write() error, message = $buffer")
-          }
-        },
+          },
         throwable => log.warn(s"webSocket.write() error $throwable")
       )
     }
   }
 
   def tags()(implicit token: Future[AccessToken]): Future[HttpResponse[Buffer]] = {
-    token.flatMap(t => webClient.get(port, host, "/v1/tags").putHeader("Authorization", s"Bearer ${t.principal().getString("access_token")}").putHeader("predix-zone-id", zoneId).sendFuture())
+    token.flatMap(t =>
+      webClient
+        .get(port, host, "/v1/tags")
+        .putHeader("Authorization", s"Bearer ${t.principal().getString("access_token")}")
+        .putHeader("predix-zone-id", zoneId)
+        .sendFuture())
   }
 }

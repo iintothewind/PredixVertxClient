@@ -13,5 +13,11 @@ trait AssetSupport {
   implicit lazy val port: Int = cfg.getInt("predix.asset.port")
   implicit lazy val zoneId: String = cfg.getString("predix.asset.zoneId")
 
-  def collections()(implicit token: Future[AccessToken]): Future[HttpResponse[Buffer]] = token.flatMap(t => webClient.get(port, host, "/").putHeader("Authorization", s"Bearer ${t.principal().getString("access_token")}").putHeader("predix-zone-id", zoneId).sendFuture())
+  def collections()(implicit token: Future[AccessToken]): Future[HttpResponse[Buffer]] =
+    token.flatMap(t =>
+      webClient
+        .get(port, host, "/")
+        .putHeader("Authorization", s"Bearer ${t.principal().getString("access_token")}")
+        .putHeader("predix-zone-id", zoneId)
+        .sendFuture())
 }

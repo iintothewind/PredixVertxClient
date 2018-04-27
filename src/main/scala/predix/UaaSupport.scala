@@ -9,10 +9,28 @@ import scala.concurrent.Future
 trait UaaSupport {
   client: ClientLike =>
   def accessToken(siteUrl: String, clientId: String, clientSecret: String): Future[AccessToken] = {
-    OAuth2Auth.create(vertx, OAuth2FlowType.CLIENT, OAuth2ClientOptions.fromJson(webClientOptions.asJava.toJson).setSite(siteUrl).setClientID(clientId).setClientSecret(clientSecret)).getTokenFuture(new JsonObject())
+    OAuth2Auth
+      .create(
+        vertx,
+        OAuth2FlowType.CLIENT,
+        OAuth2ClientOptions
+          .fromJson(webClientOptions.asJava.toJson)
+          .setSite(siteUrl)
+          .setClientID(clientId)
+          .setClientSecret(clientSecret))
+      .getTokenFuture(new JsonObject())
   }
 
   def accessToken: Future[AccessToken] = {
-    OAuth2Auth.create(vertx, OAuth2FlowType.CLIENT, OAuth2ClientOptions.fromJson(webClientOptions.asJava.toJson).setSite(cfg.getString("predix.uaa.url")).setClientID(cfg.getString("predix.uaa.client.id")).setClientSecret(cfg.getString("predix.uaa.client.secret"))).getTokenFuture(new JsonObject())
+    OAuth2Auth
+      .create(
+        vertx,
+        OAuth2FlowType.CLIENT,
+        OAuth2ClientOptions
+          .fromJson(webClientOptions.asJava.toJson)
+          .setSite(cfg.getString("predix.uaa.url"))
+          .setClientID(cfg.getString("predix.uaa.client.id"))
+          .setClientSecret(cfg.getString("predix.uaa.client.secret")))
+      .getTokenFuture(new JsonObject())
   }
 }
